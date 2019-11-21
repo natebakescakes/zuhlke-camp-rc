@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <title>LED Control</title>
+    <style>
+      html {
+        font-family: Helvetica;
+        display: inline-block;
+        margin: 0px auto;
+        text-align: center;
+      }
+      .button {
+        display: block;
+        width: 120px;
+        background-color: #3498db;
+        border: none;
+        color: white;
+        padding: 13px 30px;
+        text-decoration: none;
+        font-size: 25px;
+        margin: 0px auto 35px;
+        cursor: pointer;
+        border-radius: 10px;
+      }
+      .button-on {
+        background-color: #3498db;
+      }
+      .button-on:active {
+        background-color: #2980b9;
+      }
+      .button-off {
+        background-color: #34495e;
+      }
+      .button-off:active {
+        background-color: #2c3e50;
+      }
+      p {
+        font-size: 14px;
+        color: #888;
+        margin-bottom: 10px;
+      }
+      body {
+        margin-top: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <a
+      id="left"
+      class="button button-off"
+      onclick="handleLeft"
+      >LEFT</a
+    >
+    <a
+      id="right"
+      class="button button-off"
+      onclick="handleRight"
+      >RIGHT</a
+    >
+    <a
+      id="reverse"
+      class="button button-off"
+      onclick="handleReverse"
+      >REVERSE</a
+    >
+    <a
+      id="drive"
+      class="button button-off"
+      onclick="handleDrive"
+      >DRIVE</a
+    >
+    <a
+      id="stop"
+      class="button button-off"
+      onclick="handleStop"
+      >STOP</a
+    >
+  </body>
+  <script>
+    function activeButton(id) {
+      document
+        .getElementById(id)
+        .classList.replace(
+          'button-off',
+          'button-on'
+        );
+    }
+
+    function inactiveAllButtons() {
+      const buttons = document.getElementsByClassName(
+        'button'
+      );
+      for (let i = 0; i < buttons.length; i++) {
+        buttons
+          .item(i)
+          .classList.replace(
+            'button-on',
+            'button-off'
+          );
+      }
+    }
+
+    function handleLeft() {
+      fetch('http://192.168.4.1/left', {
+        mode: 'no-cors'
+      });
+      inactiveAllButtons();
+      activeButton('left');
+    }
+
+    function handleRight() {
+      fetch('http://192.168.4.1/right', {
+        mode: 'no-cors'
+      });
+      inactiveAllButtons();
+      activeButton('right', right);
+    }
+
+    function handleStop() {
+      fetch('http://192.168.4.1/stop', {
+        mode: 'no-cors'
+      });
+      inactiveAllButtons();
+      activeButton('stop', stop);
+    }
+
+    function handleDrive() {
+      fetch('http://192.168.4.1/drive', {
+        mode: 'no-cors'
+      });
+      inactiveAllButtons();
+      activeButton('drive');
+    }
+
+    function handleReverse() {
+      fetch('http://192.168.4.1/reverse', {
+        mode: 'no-cors'
+      });
+      inactiveAllButtons();
+      activeButton('reverse');
+    }
+
+    document.addEventListener('keypress', e => {
+      console.log(e.key);
+      switch (e.key) {
+        case 'w':
+          handleDrive();
+          break;
+        case 's':
+          handleReverse();
+          break;
+        case 'a':
+          handleLeft();
+          break;
+        case 'd':
+          handleRight();
+          break;
+        case ' ':
+          handleStop();
+          break;
+        default:
+          break;
+      }
+    });
+  </script>
+</html>
